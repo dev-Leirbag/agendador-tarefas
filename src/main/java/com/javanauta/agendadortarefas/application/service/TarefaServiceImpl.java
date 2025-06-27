@@ -33,6 +33,7 @@ public class TarefaServiceImpl implements ITarefasService {
 
         TarefasDomain domain = tarefasRepository.gravarTarefa(
                 converter.paraDomain(dtoFinal));
+        System.out.println("Tarefa Salva " + " ID: " + domain.getId());
 
         return converter.paraDto(domain);
     }
