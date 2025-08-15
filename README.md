@@ -1,124 +1,79 @@
-# 📆 Agendador de Tarefas – Sistema Completo
+# 📆 Agendador de Tarefas – Microserviço
 
-Sistema completo com **cadastro de usuários**, **agendamento de tarefas** e **envio de notificações assíncronas por e-mail**, estruturado com arquitetura de microsserviços e orquestração via BFF (Backend for Frontend).
+Este repositório é responsável por criar, listar, atualizar e excluir tarefas de usuários previamente cadastrados no sistema.
 
----
+ℹ️ Este não é o sistema completo. Ele funciona em conjunto com outros microsserviços:
+
+[Cadastro/Autenticação de Usuários](https://github.com/dev-Leirbag/usuario)
+
+[Notificação por E-mail](https://github.com/dev-Leirbag/notificacao)
+
+[BFF (Backend for Frontend)](https://github.com/dev-Leirbag/bff-agendador-tarefas)
 
 ## 🧠 Visão Geral
 
-Este projeto foi criado com foco em praticar conceitos avançados de desenvolvimento backend com Java e Spring Boot, incluindo autenticação com JWT, deploy com Docker, CI/CD com GitHub Actions e serviços independentes que se comunicam entre si.
+O Task Service recebe requisições do BFF e mantém o ciclo de vida das tarefas no banco de dados.
+Cada tarefa pode conter título, descrição, data e hora de execução, e status.
 
-O sistema conta com:
+🔧 Tecnologias Utilizadas
 
-- API de **cadastro e autenticação de usuários**
-- API de **agendamento e gerenciamento de tarefas**
-- Serviço assíncrono de **notificações por e-mail**
-- Orquestração via **BFF (Backend for Frontend)** para consumo centralizado dos serviços
+Java 17
 
----
+Spring Boot (Spring Web, Spring Data JPA)
 
-## 🏗️ Arquitetura
+PostgreSQL
 
-```
-Usuário (frontend)
-      ↓
-     BFF
- ┌────────────┐
- │ /auth      │ → Serviço de autenticação (JWT)
- │ /tasks     │ → Serviço de agendamento de tarefas
- │ /notify    │ → Serviço de notificações por e-mail
- └────────────┘
-```
+Docker
 
-Cada serviço é executado de forma independente, seguindo os princípios de microsserviços, e se comunica com o BFF, que funciona como ponto central de integração.
+Swagger para documentação
 
----
+JUnit e Mockito para testes
 
-## 🔧 Tecnologias Utilizadas
+## 🧪 Como executar este microserviço
 
-- **Java 17**
-- **Spring Boot**, Spring Security, Spring Web, Spring Data JPA
-- **JWT** para autenticação segura
-- **PostgreSQL** e **MongoDB**
-- **Docker** e Docker Compose
-- **GitHub Actions** para CI/CD
-- **Swagger** para documentação das APIs
-- **AWS (S3 e Lambda)** para simulação de serviços cloud
-- **JUnit e Mockito** para testes
+- Clone o repositório
 
----
+      git clone https://github.com/dev-Leirbag/agendador-tarefas.git
 
-## 🧪 Como executar o projeto
+- Configure o application.properties
 
-1. **Clone o repositório**
+      spring.datasource.url=jdbc:postgresql://localhost:5432/taskdb
+      spring.datasource.username=seu_usuario
+      spring.datasource.password=sua_senha
+      usuario.url=localhost:8080
+      server.port=8081
 
-```bash
-git clone https://github.com/dev-Leirbag/agendador-tarefas.git
-cd agendador-tarefas
-```
+- Execute com Maven ou Docker
 
-2. **Configure variáveis de ambiente**
+- Com Maven:
 
-Crie arquivos `.env` ou `application.properties` para cada serviço (`auth`, `tasks`, `notify`, `bff`) com configurações específicas de banco, porta e tokens.
+      mvn spring-boot:run
 
-3. **Execute com Docker Compose**
+- Com Docker(Não Obrigatorio para o funcionamento):
 
-```bash
-docker-compose up --build
-```
+      docker build -t task-service .
+      docker run -p 8081:8081 task-service
 
-4. **Acesse os endpoints**
+- Acesse a documentação Swagger
 
-- Swagger do BFF: `http://localhost:8080/swagger-ui.html`
-- Autenticação: `/auth`
-- Tarefas: `/tasks`
-- Notificações: `/notify`
+      http://localhost:8081/swagger-ui.html
 
----
+🚀 Funcionalidades
 
-## 📂 Estrutura dos diretórios
+✔️ Criar tarefas
+✔️ Listar tarefas
+✔️ Atualizar tarefas
+✔️ Excluir tarefas
 
-```
-agendador-tarefas/
-│
-├── auth-service/         → Cadastro e login de usuários
-├── task-service/         → Agendamento, edição e exclusão de tarefas
-├── notification-service/ → Serviço assíncrono de envio de e-mails
-├── bff/                  → Backend for Frontend que orquestra as requisições
-├── docker-compose.yml    → Orquestração dos serviços
-└── README.md             → Documentação do projeto
-```
+🔗 Outros Microsserviços do Sistema
 
----
+Auth Service (Cadastro e Login de Usuários) → [Repositório](https://github.com/dev-Leirbag/usuario)
 
-## 🚀 Funcionalidades
+Notification Service (Envio de E-mails) → [Repositório](https://github.com/dev-Leirbag/notificacao)
 
-✔️ Cadastro de usuários com senha criptografada  
-✔️ Login com geração de token JWT  
-✔️ Agendamento de tarefas com data, título e descrição  
-✔️ Notificações automáticas por e-mail em horário agendado  
-✔️ Integração centralizada com segurança via BFF  
-✔️ CI/CD com GitHub Actions  
-✔️ Deploy local com Docker e configuração cloud com AWS
+BFF (Integração e Orquestração) → [Repositório](https://github.com/dev-Leirbag/bff-agendador-tarefas)
 
----
+🧑‍💻 Autor
+**Gabriel Alves Ferreira**
 
-## 💡 Próximas melhorias
-
-- Dashboard com métricas e histórico de notificações  
-- Tela de frontend com React ou Angular (em andamento)  
-- Deploy final em ambiente de produção (AWS EC2 ou Render)
-
----
-
-## 🤝 Contribuição
-
-Sinta-se à vontade para abrir issues, propor melhorias ou sugerir correções. Este projeto é um laboratório contínuo de boas práticas e arquitetura escalável.
-
----
-
-## 🧑‍💻 Autor
-
-**Gabriel Alves Ferreira**  
-[LinkedIn](https://www.linkedin.com/in/gabriel-alves-profile/)  
-[GitHub](https://github.com/dev-Leirbag)
+[LinkedIn](https://www.linkedin.com/in/gabriel-alves-profile/)
